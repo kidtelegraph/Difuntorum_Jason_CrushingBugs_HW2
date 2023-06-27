@@ -9,11 +9,16 @@ const dropZones = document.querySelectorAll(".drop-zone");
 let draggedPiece;
 
 function changeBGImage(){
+    const backgroundID = this.id;
+    puzzleBoard.style.backgroundImage = `url(images/backGround${backgroundID}.jpg)`;
+  
+    // Reset puzzle by removing dropped pieces from drop zones
     //here i am calling this ID background
     const backgroundID = this.id;
     puzzleBoard.style.backgroundImage = `url(images/backGround${backgroundID}.jpg)`;
   
     // this is to reset puzzle by removing dropped pieces from the drop zones
+main
     dropZones.forEach((zone) => {
       if (zone.firstChild) {
         const piece = zone.firstChild;
