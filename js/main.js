@@ -1,30 +1,36 @@
 //variables
-const theButtons = document.querySelectorAll("#buttonHolder img"),
-    puzzleBoard = document.querySelector(".puzzle-board"),
-    puzzlePieces = document.querySelectorAll(".puzzle-pieces img");
-    puzzlePieceDiv = document.querySelector(".puzzle-pieces"),
-    dropZones = document.querySelectorAll(".drop-zone");
+const theButtons = document.querySelectorAll("#buttonHolder img");
+const puzzleBoard = document.querySelector(".puzzle-board");
+const puzzlePieces = document.querySelectorAll(".puzzle-pieces img");
+const puzzlePieceDiv = document.querySelector(".puzzle-pieces");
+const dropZones = document.querySelectorAll(".drop-zone");
 //console.log(theButtons);
 //console.log(puzzleBoard);
 let draggedPiece;
 
-function changeBGImage() {
-    //console.log("changeBGImage called");
-    //url('../images/backGround0.jpg');
-
-    //bug fix 2 will go here
-
-    //will use a forEach loop and if statement
-    //I want to loop through dropzones and check if there is a puzzle
-    //check with firstChild
-    //if there is a child
-    //puzzlePieceDiv.appendChild(something needs to go here)h
-
-    puzzleBoard.style.backgroundImage = `url(images/backGround${this.id}.jpg)`
+function changeBGImage(){
+    const backgroundID = this.id;
+    puzzleBoard.style.backgroundImage = `url(images/backGround${backgroundID}.jpg)`;
+  
+    // Reset puzzle by removing dropped pieces from drop zones
+    dropZones.forEach((zone) => {
+      if (zone.firstChild) {
+        const piece = zone.firstChild;
+        puzzlePieceDiv.appendChild(piece);
+        piece.classList.remove("dropped");
+      }
+    });
+  
+    for (let i = 0; i < puzzlePieces.length; i++) {
+      const piece = puzzlePieces[i];
+      const originalPieceImage = piece.getAttribute('src');
+      const newPieceImage = originalPieceImage.replace(/\d/g, this.id);
+      piece.src = newPieceImage;
+    }
 }
 
 function handleStartDrag() {
-    //console.log("Started dragging this piece:", this)
+    console.log("Started dragging this piece:", this)
     draggedPiece = this;
 }
 
@@ -40,15 +46,24 @@ function handleDrop(e) {
     console.log("dropped something on me");
     //this line moves the dragged piece from the left side of the board
     //into whatever dropzone we choose
-    this.appendChild(draggedPiece);
     //bugFix 1 will go here
-    if(this.children.length >= 1) {
+    if (this.children.length >=1) {
         return;
     }
-    //could also check if there are no children then if so appennd
     this.appendChild(draggedPiece);
-}    
+    // could also check if there are no children then if so appennd
+}
 
+    //this is where i start the function to reset the puzzle
+function resetPuzzle() {
+    puzzlePieces.forEach((piece) => {
+        piece.classList.remove("dropped");
+    //this is to make sure the placed piece is remove when new puzzle is selected
+        piece.parentNode.removeChild(piece);
+        puzzlePieceDiv.appendChild(piece);
+    });
+}
+       
 //event Listeners
 theButtons.forEach(button => button.addEventListener("click", changeBGImage)); 
 
@@ -58,4 +73,6 @@ dropZones.forEach(zone => zone.addEventListener("dragover", handleDragOver));
 
 dropZones.forEach(zone => zone.addEventListener("drop", handleDrop));
 
-dropZones.forEach(zone => zone.addEventListener("dropover", handleDrop));
+// event listener for the reset button 
+const resetButton = document.getElementById("resetBut");
+resetButton.addEventListener("click", resetPuzzle);

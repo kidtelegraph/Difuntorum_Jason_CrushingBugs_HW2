@@ -60,13 +60,6 @@ body {
 	cursor: pointer;
 }
 
-.puzzle-imageDiv {
-	width: 40%;
-	display: ruby-base-container;
-	padding: 8px;
-	cursor: pointer;
-}
-
 .puzzle-image:nth-child(even) {
 	margin-left: auto;
 }
@@ -86,7 +79,7 @@ body {
 
 
 /* set positioning for pieces so they align/snap together */
-.tl img { right: 0; bottom: 0; }
+.tl img { right: 0; bottom: 0; left: 0;}
 .tr img { bottom: 0; }
 .bl img { right: 0; }
 
